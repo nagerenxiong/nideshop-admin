@@ -109,8 +109,9 @@ if (process.env.NODE_ENV === 'production') {
 
   webConfig.plugins.push(
     new BabiliWebpackPlugin({
-      removeConsole: true,
-      removeDebugger: true
+      // 开发模式，打开log输出
+      removeConsole: false,
+      removeDebugger: false
     }),
     new CopyWebpackPlugin([
       {

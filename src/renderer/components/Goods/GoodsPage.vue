@@ -98,7 +98,7 @@
           type: 'warning'
         }).then(() => {
 
-          this.axios.post('商品/destory', { id: row.id }).then((response) => {
+          this.axios.post('goods/destory', { id: row.id }).then((response) => {
             console.log(response.data)
             if (response.data.errno === 0) {
               this.$message({

@@ -11,6 +11,9 @@ import store from './store'
 Vue.use(VueAxios, Axios);
 Vue.use(ElementUI);
 
+// add设置调试模式
+Vue.config.devtools = true;
+
 router.beforeEach((to, from, next) => {
 
 	let token = localStorage.getItem('token') || '';

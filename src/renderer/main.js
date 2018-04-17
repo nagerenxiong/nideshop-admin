@@ -8,6 +8,11 @@ import App from './App'
 import router from './router'
 import store from './store'
 
+// 引用 quill-editor 样式
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
 Vue.use(VueAxios, Axios);
 Vue.use(ElementUI);
 

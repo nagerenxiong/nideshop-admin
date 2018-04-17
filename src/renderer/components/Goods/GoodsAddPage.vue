@@ -20,26 +20,29 @@
           <el-form-item label="商品价格" prop="retail_price">
             <el-input v-model="infoForm.retail_price"></el-input>
           </el-form-item>
-          <el-form-item label="所属分类">
+          <!-- <el-form-item label="所属分类">
             <el-cascader :options="options" placeholder="请选择分类" v-model="selectedOptions" @change="handleChange">
             </el-cascader>
-          </el-form-item>
-          <el-form-item label="所属品牌">
+          </el-form-item> -->
+          <!-- <el-form-item label="所属品牌">
             <el-select v-model="infoForm.region" placeholder="请选择商品">
               <el-option label="长城" value="shanghai"></el-option>
               <el-option label="宝马" value="beijing"></el-option>
             </el-select>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="商品简介" prop="goods_brief">
             <el-input type="textarea" v-model="infoForm.goods_brief" :rows="3"></el-input>
             <div class="form-tip"></div>
           </el-form-item>
           <el-form-item label="商品详细" prop="goods_desc">
             <div class="edit_container">
+              <!-- <quill-editor v-model="testeditor" -->
               <quill-editor v-model="infoForm.goods_desc"
                       ref="myTextEditor"
-                      class="editer"
-                      :options="editorOption" @ready="onEditorReady($event)">
+                      :options="editorOption" 
+                      @blur="onEditorBlur($event)"
+                      @focus="onEditorFocus($event)"
+                      @ready="onEditorReady($event)">
               </quill-editor>
             </div>
             <div class="form-tip"></div>
@@ -82,13 +85,26 @@
 
 <script>
   import api from '@/config/api';
-  import Vue from 'vue'
-  import { QuillEditor } from 'vue-quill-editor' //调用富文本编辑器
+  import { quillEditor } from 'vue-quill-editor' //调用富文本编辑器
   export default {
     data() {
       return {
         uploaderHeader: {
           'X-Nideshop-Token': localStorage.getItem('token') || '',
+        },
+        infoForm: {
+          id: 0,
+          name: "",
+          list_pic_url: '',
+          simple_desc: '',
+          pic_url: '',
+          sort_order: 100,
+          is_show: true,
+          floor_price: 0,
+          app_list_pic_url: '',
+          is_new: false,
+          new_pic_url: "",
+          new_sort_order: 10
         },
         editorOption: {
           modules: {
@@ -107,25 +123,8 @@
               [{ 'align': [] }],
               ['clean'],
               ['link', 'image', 'video']
-            ],
-            syntax: {
-              highlight: text => hljs.highlightAuto(text).value
-            }
+            ]
           }
-        },
-        infoForm: {
-          id: 0,
-          name: "",
-          list_pic_url: '',
-          simple_desc: '',
-          pic_url: '',
-          sort_order: 100,
-          is_show: true,
-          floor_price: 0,
-          app_list_pic_url: '',
-          is_new: false,
-          new_pic_url: "",
-          new_sort_order: 10
         },
         infoRules: {
           name: [
@@ -143,6 +142,12 @@
     methods: {
       onEditorReady(editor) {
         console.log('editor ready!', editor)
+      },
+      onEditorFocus(editor) {
+        console.log('editor focus!', editor)
+      },
+      onEditorBlur(editor) {
+        console.log('editor blur!', editor)
       },
       goBackPage() {
         this.$router.go(-1);
@@ -204,7 +209,7 @@
     },
     components: {
       //使用富文本编辑器
-      QuillEditor
+      quillEditor
     },
     computed: {
       editor() {
@@ -221,6 +226,12 @@
 </script>
 
 <style>
+  /* .edit_container{ */
+  .ql-container{
+    min-height: 200px;
+    max-height: 400px;
+    overflow-y: auto;
+  }
   .image-uploader{
     height: 105px;
   }

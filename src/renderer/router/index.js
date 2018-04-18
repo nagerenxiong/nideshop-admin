@@ -32,6 +32,16 @@ export default new Router({
                     component: require('@/components/Goods/GoodsAddPage')
                 },
                 {
+                    path: 'goodsissue',
+                    name: 'goodsissue',
+                    component: require('@/components/GoodsIssue/GoodsIssuePage')
+                },
+                {
+                    path: 'goodsissue/add',
+                    name: 'goodsissue_add',
+                    component: require('@/components/GoodsIssue/GoodsIssueAddPage')
+                },
+                {
                     path: 'category',
                     name: 'category',
                     component: require('@/components/Category/CategoryPage')

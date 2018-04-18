@@ -26,6 +26,10 @@
                     <i class="fa fa-circle"></i>
                     <span>品牌管理</span>
                 </el-menu-item>
+                <el-menu-item index="/dashboard/goodsissue">
+                    <i class="fa fa-circle"></i>
+                    <span>商品疑问</span>
+                </el-menu-item>
             </el-submenu>
             <el-submenu index="order">
                 <template slot="title">

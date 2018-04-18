@@ -7,7 +7,7 @@
                 <el-breadcrumb-item>订单列表</el-breadcrumb-item>
             </el-breadcrumb>
             <div class="operation-nav">
-                <router-link to="/dashboard/order/add">
+                <router-link to="/dashboard/order/detail">
                     <el-button type="primary" icon="plus">添加订单</el-button>
                 </router-link>
             </div>
@@ -38,7 +38,7 @@
                     </el-table-column>
                     <el-table-column prop="actual_price" label="订单金额">
                     </el-table-column>
-                    <el-table-column prop="order_status_text" label="订单状态">
+                    <el-table-column prop="order_status" label="订单状态">
                     </el-table-column>
                     <el-table-column label="操作" width="140">
                         <template scope="scope">
@@ -78,7 +78,7 @@
         this.getList()
       },
       handleRowEdit(index, row) {
-        this.$router.push({ name: 'order_add', query: { id: row.id } })
+        this.$router.push({ name: 'order_detail', query: { id: row.id } })
       },
       handleRowDelete(index, row) {
 

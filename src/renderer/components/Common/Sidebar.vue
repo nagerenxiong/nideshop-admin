@@ -33,7 +33,8 @@
             </el-submenu>
             <el-submenu index="order">
                 <template slot="title">
-                    <i class="fa fa-large fa-truck"></i>订单中心
+                    <i class="fa fa-large fa-truck"></i>
+                    <span>订单中心</span>
                 </template>
                 <el-menu-item index="/dashboard/order">
                     <i class="fa fa-circle"></i>
@@ -62,16 +63,16 @@
                     <span>专题管理</span>
                 </el-menu-item>
             </el-submenu>
-            <!--<el-submenu index="total">-->
-                <!--<template slot="title">-->
-                    <!--<i class="fa fa-large fa-line-chart"></i>-->
-                    <!--<span>数据统计</span>-->
-                <!--</template>-->
-                <!--<el-menu-item index="/dashboard/total">-->
-                    <!--<i class="fa fa-circle"></i>-->
-                    <!--<span>订单列表</span>-->
-                <!--</el-menu-item>-->
-            <!--</el-submenu>-->
+            <!-- <el-submenu index="order">
+                <template slot="title">
+                    <i class="fa fa-large fa-line-chart"></i>
+                    <span>数据统计</span>
+                </template>
+                <el-menu-item index="/dashboard/order">
+                    <i class="fa fa-circle"></i>
+                    <span>订单列表</span>
+                </el-menu-item>
+            </el-submenu> -->
             <el-submenu index="user">
                 <template slot="title">
                     <i class="fa fa-large fa-users"></i>

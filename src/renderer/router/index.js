@@ -76,21 +76,31 @@ export default new Router({
                     name: 'topic',
                     component: require('@/components/Topic/TopicPage')
                 },
-              {
-                path: 'operate/topic/add',
-                name: 'topic_add',
-                component: require('@/components/Topic/TopicAddPage')
-              },
-              {
-                path: 'user',
-                name: 'user',
-                component: require('@/components/User/UserPage')
-              },
-              {
-                path: 'user/add',
-                name: 'user_add',
-                component: require('@/components/User/UserAddPage')
-              },
+                {
+                    path: 'operate/topic/add',
+                    name: 'topic_add',
+                    component: require('@/components/Topic/TopicAddPage')
+                },
+                {
+                    path: 'user',
+                    name: 'user',
+                    component: require('@/components/User/UserPage')
+                },
+                {
+                    path: 'user/add',
+                    name: 'user_add',
+                    component: require('@/components/User/UserAddPage')
+                },
+                {
+                    path: 'shipper',
+                    name: 'shipper',
+                    component: require('@/components/Shipper/ShipperPage')
+                },
+                {
+                    path: 'shipper/add',
+                    name: 'shipper_add',
+                    component: require('@/components/Shipper/ShipperAddPage')
+                },
             ]
         },
         {

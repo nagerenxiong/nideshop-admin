@@ -100,6 +100,16 @@
                     <!--<span>首页设置</span>-->
                 <!--</el-menu-item>-->
             <!--</el-submenu>-->
+            <el-submenu index="shipper">
+                <template slot="title">
+                    <i class="fa fa-large fa-users"></i>
+                    <span>快递公司</span>
+                </template>
+                <el-menu-item index="/dashboard/shipper">
+                    <i class="fa fa-circle"></i>
+                    <span>快递公司列表</span>
+                </el-menu-item>
+            </el-submenu>
         </el-menu>
     </div>
 </template>

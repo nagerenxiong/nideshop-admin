@@ -111,6 +111,16 @@
                     <span>快递公司列表</span>
                 </el-menu-item>
             </el-submenu>
+            <el-submenu index="ad">
+                <template slot="title">
+                    <i class="fa fa-large fa-picture-o"></i>
+                    <span>广告管理</span>
+                </template>
+                <el-menu-item index="/dashboard/ad">
+                    <i class="fa fa-circle"></i>
+                    <span>广告列表</span>
+                </el-menu-item>
+            </el-submenu>
         </el-menu>
     </div>
 </template>

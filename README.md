@@ -1,5 +1,6 @@
 # nideshop-admin
 Node.js开源商城NideShop管理后台（基于Node.js、Vue.js、Element UI、~~Electron~~）
+[Font Awesome](http://fontawesome.dashgame.com/)
 
 ### 测试版包含功能（待完善）
 + 管理员登录

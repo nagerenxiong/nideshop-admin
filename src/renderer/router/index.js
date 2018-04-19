@@ -101,6 +101,16 @@ export default new Router({
                     name: 'shipper_add',
                     component: require('@/components/Shipper/ShipperAddPage')
                 },
+                {
+                    path: 'ad',
+                    name: 'ad',
+                    component: require('@/components/Ad/AdPage')
+                },
+                {
+                    path: 'ad/add',
+                    name: 'ad_add',
+                    component: require('@/components/Ad/AdAddPage')
+                },
             ]
         },
         {

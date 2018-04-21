@@ -32,7 +32,7 @@
                     <el-form-item label="推荐">
                         <el-checkbox label="" v-model="infoForm.is_new"></el-checkbox>
                     </el-form-item>
-                    <el-form-item label="推荐展示图片" v-if="infoForm.is_new">
+                    <el-form-item label="推荐展示图片" v-if="infoForm.is_new" prop="new_pic_url">
                         <el-upload class="image-uploader new-image-uploader" name="brand_new_pic"
                                    action="http://127.0.0.1:8360/admin/upload/brandNewPic" :show-file-list="false"
                                    :on-success="handleUploadImageSuccess" :headers="uploaderHeader">

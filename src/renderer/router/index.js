@@ -111,6 +111,21 @@ export default new Router({
                     name: 'ad_add',
                     component: require('@/components/Ad/AdAddPage')
                 },
+                {
+                    path: 'shopcart',
+                    name: 'shopcart',
+                    component: require('@/components/ShopCart/ShopCartPage')
+                },
+                {
+                    path: 'comment',
+                    name: 'comment',
+                    component: require('@/components/Comment/CommentPage')
+                },
+                {
+                    path: 'comment/add',
+                    name: 'comment_add',
+                    component: require('@/components/Comment/CommentAddPage')
+                },
             ]
         },
         {

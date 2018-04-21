@@ -63,16 +63,24 @@
                     <span>专题管理</span>
                 </el-menu-item>
             </el-submenu>
-            <!-- <el-submenu index="order">
+            <el-submenu index="data">
                 <template slot="title">
                     <i class="fa fa-large fa-line-chart"></i>
                     <span>数据统计</span>
                 </template>
-                <el-menu-item index="/dashboard/order">
+                <el-menu-item index="/dashboard/shopcart">
+                    <i class="fa fa-circle"></i>
+                    <span>购物车列表</span>
+                </el-menu-item>
+                <el-menu-item index="/dashboard/comment">
+                    <i class="fa fa-circle"></i>
+                    <span>评论列表</span>
+                </el-menu-item>
+                <!-- <el-menu-item index="/dashboard/order">
                     <i class="fa fa-circle"></i>
                     <span>订单列表</span>
-                </el-menu-item>
-            </el-submenu> -->
+                </el-menu-item> -->
+            </el-submenu>
             <el-submenu index="user">
                 <template slot="title">
                     <i class="fa fa-large fa-users"></i>

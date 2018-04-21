@@ -117,7 +117,7 @@
           switch (res.data.name) {
             //分类图片
             case 'wap_banner_url':
-//              this.$set('infoForm.wap_banner_url', res.data.fileUrl);
+              // this.$set('infoForm.wap_banner_url', res.data.fileUrl);
               this.infoForm.wap_banner_url = res.data.fileUrl;
               break;
           }

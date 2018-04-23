@@ -76,10 +76,10 @@
                     <i class="fa fa-circle"></i>
                     <span>评论列表</span>
                 </el-menu-item>
-                <!-- <el-menu-item index="/dashboard/order">
+                <el-menu-item index="/dashboard/coupon">
                     <i class="fa fa-circle"></i>
-                    <span>订单列表</span>
-                </el-menu-item> -->
+                    <span>优惠券列表</span>
+                </el-menu-item>
             </el-submenu>
             <el-submenu index="user">
                 <template slot="title">

@@ -126,6 +126,16 @@ export default new Router({
                     name: 'comment_add',
                     component: require('@/components/Comment/CommentAddPage')
                 },
+                {
+                    path: 'coupon',
+                    name: 'coupon',
+                    component: require('@/components/Coupon/CouponPage')
+                },
+                {
+                    path: 'coupon/add',
+                    name: 'coupon_add',
+                    component: require('@/components/Coupon/CouponAddPage')
+                },
             ]
         },
         {

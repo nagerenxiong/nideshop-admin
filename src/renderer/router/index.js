@@ -136,6 +136,16 @@ export default new Router({
                     name: 'coupon_add',
                     component: require('@/components/Coupon/CouponAddPage')
                 },
+                {
+                    path: 'keywords',
+                    name: 'keywords',
+                    component: require('@/components/Keywords/KeywordsPage')
+                },
+                {
+                    path: 'keywords/add',
+                    name: 'keywords_add',
+                    component: require('@/components/Keywords/KeywordsAddPage')
+                },
             ]
         },
         {

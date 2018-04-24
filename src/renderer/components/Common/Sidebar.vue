@@ -80,6 +80,10 @@
                     <i class="fa fa-circle"></i>
                     <span>优惠券列表</span>
                 </el-menu-item>
+                <el-menu-item index="/dashboard/keywords">
+                    <i class="fa fa-circle"></i>
+                    <span>热门搜索</span>
+                </el-menu-item>
             </el-submenu>
             <el-submenu index="user">
                 <template slot="title">

@@ -30,23 +30,6 @@
               <el-option label="宝马" value="beijing"></el-option>
             </el-select>
           </el-form-item> -->
-          <el-form-item label="商品简介" prop="goods_brief">
-            <el-input type="textarea" v-model="infoForm.goods_brief" :rows="3"></el-input>
-            <div class="form-tip"></div>
-          </el-form-item>
-          <el-form-item label="商品详细" prop="goods_desc">
-            <div class="edit_container">
-              <!-- <quill-editor v-model="testeditor" -->
-              <quill-editor v-model="infoForm.goods_desc"
-                      ref="myTextEditor"
-                      :options="editorOption" 
-                      @blur="onEditorBlur($event)"
-                      @focus="onEditorFocus($event)"
-                      @ready="onEditorReady($event)">
-              </quill-editor>
-            </div>
-            <div class="form-tip"></div>
-          </el-form-item>
           <el-form-item label="商品图片" prop="list_pic_url">
             <el-upload class="image-uploader" name="brand_pic"
                        action="http://127.0.0.1:8360/admin/upload/brandPic" :show-file-list="true"
@@ -56,9 +39,17 @@
             </el-upload>
             <div class="form-tip">图片尺寸：750*420</div>
           </el-form-item>
-          <el-form-item label="规格/库存" prop="simple_desc">
-
+          <el-form-item label="商品简介" prop="goods_brief">
+            <el-input type="textarea" v-model="infoForm.goods_brief" :rows="3"></el-input>
+            <div class="form-tip"></div>
           </el-form-item>
+          <el-form-item label="商品详情" prop="goods_desc">
+            <div id="summernote">
+            </div>
+            <div class="form-tip"></div>
+          </el-form-item>
+          <!-- <el-form-item label="规格/库存" prop="simple_desc">
+          </el-form-item> -->
           <el-form-item label="推荐类型">
             <el-checkbox-group v-model="infoForm.is_new">
               <el-checkbox label="新品" name="type" ></el-checkbox>
@@ -68,9 +59,9 @@
             </el-checkbox-group>
           </el-form-item>
           <el-form-item label="上架">
-            <el-switch on-text="上架" off-text="下架" on-value="1" off-value="0" v-model="infoForm.is_delete"></el-switch>
+            <el-switch on-text="上架" off-text="下架" on-value="0" off-value="1" v-model="infoForm.is_delete"></el-switch>
           </el-form-item>
-          <el-form-item label="排序">
+          <el-form-item label="排序" prop="sort_order">
             <el-input-number v-model="infoForm.sort_order" :min="1" :max="1000"></el-input-number>
           </el-form-item>
           <el-form-item>
@@ -85,7 +76,7 @@
 
 <script>
   import api from '@/config/api';
-  import { quillEditor } from 'vue-quill-editor' //调用富文本编辑器
+  import $ from 'jquery'
   export default {
     data() {
       return {
@@ -96,7 +87,9 @@
           id: 0,
           name: "",
           list_pic_url: '',
-          simple_desc: '',
+          goods_brief: '',
+          goods_desc: '',
+          is_delete: 0,
           pic_url: '',
           sort_order: 100,
           is_show: true,
@@ -106,31 +99,11 @@
           new_pic_url: "",
           new_sort_order: 10
         },
-        editorOption: {
-          modules: {
-            toolbar: [
-              ['bold', 'italic', 'underline', 'strike'],
-              ['blockquote', 'code-block'],
-              [{ 'header': 1 }, { 'header': 2 }],
-              [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-              [{ 'script': 'sub' }, { 'script': 'super' }],
-              [{ 'indent': '-1' }, { 'indent': '+1' }],
-              [{ 'direction': 'rtl' }],
-              [{ 'size': ['small', false, 'large', 'huge'] }],
-              [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-              [{ 'font': [] }],
-              [{ 'color': [] }, { 'background': [] }],
-              [{ 'align': [] }],
-              ['clean'],
-              ['link', 'image', 'video']
-            ]
-          }
-        },
         infoRules: {
           name: [
             { required: true, message: '请输入名称', trigger: 'blur' },
           ],
-          simple_desc: [
+          goods_brief: [
             { required: true, message: '请输入简介', trigger: 'blur' },
           ],
           list_pic_url: [
@@ -140,22 +113,13 @@
       }
     },
     methods: {
-      onEditorReady(editor) {
-        console.log('editor ready!', editor)
-      },
-      onEditorFocus(editor) {
-        console.log('editor focus!', editor)
-      },
-      onEditorBlur(editor) {
-        console.log('editor blur!', editor)
-      },
       goBackPage() {
         this.$router.go(-1);
       },
       onSubmitInfo() {
         this.$refs['infoForm'].validate((valid) => {
           if (valid) {
-            this.axios.post('brand/store', this.infoForm).then((response) => {
+            this.axios.post('goods/store', this.infoForm).then((response) => {
               if (response.data.errno === 0) {
                 this.$message({
                   type: 'success',
@@ -179,10 +143,12 @@
           switch (res.data.name) {
             //商品图片
             case 'brand_pic':
-              this.$set('infoForm.list_pic_url', res.data.fileUrl);
+              this.infoForm.list_pic_url = res.data.fileUrl;
+              // this.$set('infoForm.list_pic_url', res.data.fileUrl);
               break;
             case 'brand_new_pic':
-              this.$set('infoForm.new_pic_url', res.data.fileUrl);
+              this.infoForm.new_pic_url = res.data.fileUrl;
+              // this.$set('infoForm.new_pic_url', res.data.fileUrl);
               break;
           }
         }
@@ -202,25 +168,57 @@
           let resInfo = response.data.data;
           resInfo.is_new = resInfo.is_new ? true : false;
           resInfo.is_show = resInfo.is_show ? true : false;
+          resInfo.is_delete = resInfo.is_delete ? "1" : "0";
           that.infoForm = resInfo;
+
+          // 初始化 summernote
+          that.initSummerNote();
         })
+      },
+
+      // summernote 上传图片，返回链接
+      sendFile(file){
+
+      },
+      // 初始化 summernote
+      initSummerNote() {
+        let that = this
+        $('#summernote').summernote({
+          lang:'zh-CN',
+          placeholder: '请输入商品描述',
+          height: 300,
+          minHeight: 300,
+          maxHeight: 400,
+          focus: true,
+          // toolbar:[
+          //   ['style',['bold','italic','clear']],
+          //   ['fontsize',['fontsize']],
+          //   ['para',['ul','ol','paragraph']],
+          //   ['insert',['picture','link']]
+          // ],
+          callbacks: {
+            onBlur: function(e){
+              console.log(" on blur ");
+              console.log($('#summernote').summernote('code'));
+              that.infoForm.goods_desc = $('#summernote').summernote('code');
+              // that.infoForm.goods_desc = $('#summernote').summernote('code');
+            },
+            onImageUpload: function(files){
+              console.log("onImageUpLoad...");
+              that.sendFile(files[0]);
+            }
+          }
+        }),
+        // console.error(that.infoForm.goods_desc);
+        $('#summernote').summernote('code',that.infoForm.goods_desc)
       }
 
-    },
-    components: {
-      //使用富文本编辑器
-      quillEditor
-    },
-    computed: {
-      editor() {
-        return this.$refs.myTextEditor.quillEditor
-      }
     },
     mounted() {
       this.infoForm.id = this.$route.query.id || 0;
       this.getInfo();
-      console.log(api)
-    }
+      console.log(api);
+    },
   }
 
 </script>

@@ -9,14 +9,20 @@ import router from './router'
 import store from './store'
 
 
-import 'bootstrap/js/modal.js'
-import 'bootstrap/js/dropdown.js'
-import 'bootstrap/js/tooltip.js'
-import 'bootstrap/dist/css/bootstrap.css'
-import 'font-awesome/css/font-awesome.css'
-import 'summernote'
-import 'summernote/dist/lang/summernote-zh-CN.js'
-import 'summernote/dist/summernote.css'
+// vue-quill-edit
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
+// element-ui 跟 bootstrap css 有冲突
+// import 'bootstrap/js/modal.js'
+// import 'bootstrap/js/dropdown.js'
+// import 'bootstrap/js/tooltip.js'
+// // import 'bootstrap/dist/css/bootstrap.css'
+// import 'font-awesome/css/font-awesome.css'
+// import 'summernote'
+// import 'summernote/dist/lang/summernote-zh-CN.js'
+// import 'summernote/dist/summernote.css'
 
 Vue.use(VueAxios, Axios);
 Vue.use(ElementUI);

@@ -3,20 +3,20 @@
 		<div class="content-nav">
 			<el-breadcrumb class="breadcrumb" separator="/">
 				<el-breadcrumb-item :to="{ path: '/dashboard' }">首页</el-breadcrumb-item>
-				<el-breadcrumb-item>广告管理</el-breadcrumb-item>
-				<el-breadcrumb-item>关于广告位</el-breadcrumb-item>
+				<el-breadcrumb-item>商品管理</el-breadcrumb-item>
+				<el-breadcrumb-item>首页分类</el-breadcrumb-item>
 			</el-breadcrumb>
 			<div class="operation-nav">
-				<router-link to="/dashboard/ad/add">
-					<el-button type="primary" icon="plus">添加广告</el-button>
+				<router-link to="/dashboard/channel/add">
+					<el-button type="primary" icon="plus">添加首页分类</el-button>
 				</router-link>
 			</div>
 		</div>
 		<div class="content-main">
 			<div class="filter-box">
 				<el-form :inline="true" :model="filterForm" class="demo-form-inline">
-					<el-form-item label="关于广告位">
-						<el-input v-model="filterForm.name" placeholder="广告位"></el-input>
+					<el-form-item label="首页分类">
+						<el-input v-model="filterForm.name" placeholder="首页分类名称"></el-input>
 					</el-form-item>
 					<el-form-item>
 						<el-button type="primary" @click="onSubmitFilter">查询</el-button>
@@ -27,28 +27,16 @@
 				<el-table :data="tableData" style="width: 100%" border stripe>
 					<el-table-column prop="id" label="ID" width="100px">
 					</el-table-column>
-					<el-table-column prop="ad_position_id" label="广告位ID">
+					<el-table-column prop="name" label="名称">
 					</el-table-column>
-					<el-table-column prop="media_type" label="广告类型">
+                    <el-table-column prop="url" label="跳转链接" show-overflow-tooltip="true">
+					</el-table-column>
+                    <el-table-column prop="icon_url" label="Icon地址">
                         <template scope="scope">
-                            {{ scope.row.media_type == 1 ? '图片' : '视频' }}
+                            <img  :src="scope.row.icon_url" alt="" style="width: 50px;height: 50px">
                         </template>
 					</el-table-column>
-                    <el-table-column prop="image_url" label="广告">
-                        <template scope="scope">
-                            <img  :src="scope.row.image_url" alt="" style="width: 90px;height: 50px">
-                        </template>
-					</el-table-column>
-                    <el-table-column prop="name" label="广告名字">
-					</el-table-column>
-                    <el-table-column prop="content" label="广告内容" show-overflow-tooltip="true">
-					</el-table-column>
-                    <el-table-column prop="end_time" label="结束时间">
-					</el-table-column>
-                    <el-table-column prop="enabled" label="状态">
-                        <template scope="scope">
-                            {{ scope.row.enabled == 1 ? '启用' : '禁用' }}
-                        </template>
+                    <el-table-column prop="sort_order" label="排序">
 					</el-table-column>
 					<el-table-column label="操作" width="140">
 						<template scope="scope">
@@ -83,12 +71,12 @@ export default {
 		handlePageChange(val) {
 			this.page = val;
 			//保存到localStorage
-			localStorage.setItem('adPage', this.page)
-			localStorage.setItem('adFilterForm', JSON.stringify(this.filterForm));
+			localStorage.setItem('channelPage', this.page)
+			localStorage.setItem('channelFilterForm', JSON.stringify(this.filterForm));
 			this.getList()
 		},
 		handleRowEdit(index, row) {
-			this.$router.push({ name: 'ad_add', query: { id: row.id } })
+			this.$router.push({ name: 'channel_add', query: { id: row.id } })
 		},
 		handleRowDelete(index, row) {
 
@@ -98,7 +86,7 @@ export default {
 				type: 'warning'
 			}).then(() => {
 
-				this.axios.post('ad/destory', { id: row.id }).then((response) => {
+				this.axios.post('channel/destory', { id: row.id }).then((response) => {
 					console.log(response.data)
 					if (response.data.errno === 0) {
 						this.$message({
@@ -118,7 +106,7 @@ export default {
 			this.getList()
 		},
 		getList() {
-			this.axios.get('ad', {
+			this.axios.get('channel', {
 				params: {
 					page: this.page,
 					name: this.filterForm.name

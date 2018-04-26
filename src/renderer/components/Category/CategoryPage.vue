@@ -17,7 +17,9 @@
 				<el-table :data="tableData" style="width: 100%" border stripe>
 					<el-table-column prop="name" label="分类名称">
 						<template scope="scope">
-							{{ scope.row.level == 2 ? '　' : '' }} {{scope.row.name}}
+              <div v-if="scope.row.level==1" class="bg-gray">{{scope.row.name}}</div>
+              <div v-if="scope.row.level==2" class="bg-left">{{scope.row.name}}</div>
+							<!-- {{ scope.row.level == 2 ? '　' : '' }} {{scope.row.name}} -->
 						</template>
 					</el-table-column>
 					<el-table-column prop="is_show" label="是否显示" width="100">
@@ -112,5 +114,13 @@
 <style scoped>
 .sub-category .el-table__expanded-cell{
 	padding: 0;
+}
+.bg-gray{
+  /* background:gray; */
+  color:red;
+  font-weight: bold;
+}
+.bg-left{
+  margin-left: 20px;
 }
 </style>

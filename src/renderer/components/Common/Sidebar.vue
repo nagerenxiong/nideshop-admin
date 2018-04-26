@@ -22,6 +22,10 @@
                     <i class="fa fa-circle"></i>
                     <span>商品分类</span>
                 </el-menu-item>
+                <el-menu-item index="/dashboard/channel">
+                    <i class="fa fa-circle"></i>
+                    <span>首页分类</span>
+                </el-menu-item>
                 <el-menu-item index="/dashboard/brand">
                     <i class="fa fa-circle"></i>
                     <span>品牌管理</span>

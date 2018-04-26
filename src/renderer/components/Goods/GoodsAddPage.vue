@@ -31,7 +31,7 @@
             </el-select>
           </el-form-item> -->
           <el-form-item label="商品图片" prop="list_pic_url">
-            <el-upload class="image-uploader" name="brand_pic"
+            <el-upload class="image-uploader-diy" name="brand_pic"
                        action="http://127.0.0.1:8360/admin/upload/brandPic" :show-file-list="true"
                        :on-success="handleUploadImageSuccess" :headers="uploaderHeader">
               <img v-if="infoForm.list_pic_url" :src="infoForm.list_pic_url" class="image-show">
@@ -43,10 +43,29 @@
             <el-input type="textarea" v-model="infoForm.goods_brief" :rows="3"></el-input>
             <div class="form-tip"></div>
           </el-form-item>
-          <el-form-item label="商品详情" prop="goods_desc">
+          <!-- <el-form-item label="商品详情" prop="goods_desc">
             <div id="summernote">
             </div>
             <div class="form-tip"></div>
+          </el-form-item> -->
+
+        <!-- 图片上传组件辅助-->
+        <el-upload class="avatar-uploader" name="goods_detail_pic"
+                action="http://127.0.0.1:8360/admin/upload/goodsDetailPic" :show-file-list="false"
+                :on-success="handleUploadImageSuccess" :headers="uploaderHeader" 
+                :before-upload="beforeUpload" :on-error="uploadError">
+        </el-upload>
+          <el-form-item label="商品详情" prop="goods_desc">
+            <div class="edit_container">
+              <quill-editor v-model="infoForm.goods_desc"
+                  ref="myTextEditor"
+                  class="editer"
+                  :options="editorOption" 
+                  @blur="onEditorBlur($event)"
+                  @focus="onEditorFocus($event)"
+                  @ready="onEditorReady($event)">
+              </quill-editor>
+            </div>
           </el-form-item>
           <!-- <el-form-item label="规格/库存" prop="simple_desc">
           </el-form-item> -->
@@ -77,12 +96,49 @@
 <script>
   import api from '@/config/api';
   import $ from 'jquery'
+  import { quillEditor } from 'vue-quill-editor' //调用富文本编辑器
+  const toolbarOptions = [
+              ['bold', 'italic', 'underline', 'strike'],
+              ['blockquote', 'code-block'],
+              [{ 'header': 1 }, { 'header': 2 }],
+              [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+              [{ 'script': 'sub' }, { 'script': 'super' }],
+              [{ 'indent': '-1' }, { 'indent': '+1' }],
+              [{ 'direction': 'rtl' }],
+              [{ 'size': ['small', false, 'large', 'huge'] }],
+              [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+              [{ 'font': [] }],
+              [{ 'color': [] }, { 'background': [] }],
+              [{ 'align': [] }],
+              ['clean'],
+              ['link', 'image', 'video']
+            ]
   export default {
     data() {
       return {
         uploaderHeader: {
           'X-Nideshop-Token': localStorage.getItem('token') || '',
         },
+        editorOption: {
+          modules: {
+            toolbar: {
+              container: toolbarOptions,  // 工具栏
+              handlers: {
+                'image': function (value) {
+                  if (value) {
+                    document.querySelector('.avatar-uploader input').click()
+                  } else {
+                    this.quill.format('image', false);
+                  }
+                }
+              }
+            },
+            syntax: {
+              highlight: text => hljs.highlightAuto(text).value
+            }
+          }
+        },
+
         infoForm: {
           id: 0,
           name: "",
@@ -113,6 +169,24 @@
       }
     },
     methods: {
+      onEditorReady(editor) {
+        console.log('editor ready!', editor)
+      },
+      onEditorFocus(editor) {
+        console.log('editor focus!', editor)
+      },
+      onEditorBlur(editor) {
+        console.log('editor blur!', editor)
+      },
+      beforeUpload() {
+        // 显示loading动画
+        this.quillUpdateImg = true
+      },
+      uploadError() {
+        // loading动画消失
+        this.quillUpdateImg = false
+        this.$message.error('图片插入失败')
+      },
       goBackPage() {
         this.$router.go(-1);
       },
@@ -150,6 +224,22 @@
               this.infoForm.new_pic_url = res.data.fileUrl;
               // this.$set('infoForm.new_pic_url', res.data.fileUrl);
               break;
+            case 'goods_detail_pic':
+               // res为图片服务器返回的数据
+                // 获取富文本组件实例
+                let quill = this.$refs.myTextEditor.quill
+                // 如果上传成功
+                // 获取光标所在位置
+                let length = quill.getSelection().index;
+                // 插入图片  res.info为服务器返回的图片地址
+                quill.insertEmbed(length, 'image', res.data.fileUrl)
+                // 调整光标到最后
+                quill.setSelection(length + 1)
+                
+                // this.$message.error('图片插入失败')
+                // loading动画消失
+                this.quillUpdateImg = false
+              break;
           }
         }
       },
@@ -172,7 +262,7 @@
           that.infoForm = resInfo;
 
           // 初始化 summernote
-          that.initSummerNote();
+          // that.initSummerNote();
         })
       },
 
@@ -214,6 +304,14 @@
       }
 
     },
+    components: {
+      quillEditor
+    },
+    computed: {
+      editor() {
+        return this.$refs.myTextEditor.quillEditor
+      }
+    },
     mounted() {
       this.infoForm.id = this.$route.query.id || 0;
       this.getInfo();
@@ -230,21 +328,21 @@
     max-height: 400px;
     overflow-y: auto;
   }
-  .image-uploader{
+  .image-uploader-diy{
     height: 105px;
   }
-  .image-uploader .el-upload {
+  .image-uploader-diy .el-upload {
     border: 1px solid #d9d9d9;
     cursor: pointer;
     position: relative;
     overflow: hidden;
   }
 
-  .image-uploader .el-upload:hover {
+  .image-uploader-diy .el-upload:hover {
     border-color: #20a0ff;
   }
 
-  .image-uploader .image-uploader-icon {
+  .image-uploader-diy .image-uploader-icon {
     font-size: 28px;
     color: #8c939d;
     width: 187px;
@@ -253,13 +351,13 @@
     text-align: center;
   }
 
-  .image-uploader .image-show {
+  .image-uploader-diy .image-show {
     width: 187px;
     height: 105px;
     display: block;
   }
 
-  .image-uploader.new-image-uploader {
+  .image-uploader-diy .new-image-uploader {
     font-size: 28px;
     color: #8c939d;
     width: 165px;
@@ -268,7 +366,7 @@
     text-align: center;
   }
 
-  .image-uploader.new-image-uploader .image-uploader-icon {
+  .image-uploader-diy .new-image-uploader .image-uploader-icon {
     font-size: 28px;
     color: #8c939d;
     width: 165px;
@@ -277,7 +375,7 @@
     text-align: center;
   }
 
-  .image-uploader.new-image-uploader .image-show {
+  .image-uploader-diy .new-image-uploader .image-show {
     width: 165px;
     height: 105px;
     display: block;

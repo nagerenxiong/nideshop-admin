@@ -146,6 +146,16 @@ export default new Router({
                     name: 'keywords_add',
                     component: require('@/components/Keywords/KeywordsAddPage')
                 },
+                {
+                    path: 'channel',
+                    name: 'channel',
+                    component: require('@/components/Channel/ChannelPage')
+                },
+                {
+                    path: 'channel/add',
+                    name: 'channel_add',
+                    component: require('@/components/Channel/ChannelAddPage')
+                },
             ]
         },
         {

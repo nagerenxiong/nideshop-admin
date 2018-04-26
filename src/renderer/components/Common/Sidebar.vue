@@ -18,6 +18,10 @@
                     <i class="fa fa-circle"></i>
                     <span>商品列表</span>
                 </el-menu-item>
+                <el-menu-item index="/dashboard/goodsgallery">
+                    <i class="fa fa-circle"></i>
+                    <span>商品标头图列表</span>
+                </el-menu-item>
                 <el-menu-item index="/dashboard/category">
                     <i class="fa fa-circle"></i>
                     <span>商品分类</span>

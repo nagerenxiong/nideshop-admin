@@ -24,12 +24,20 @@
             <el-cascader :options="options" placeholder="请选择分类" v-model="selectedOptions" @change="handleChange">
             </el-cascader>
           </el-form-item> -->
-          <!-- <el-form-item label="所属品牌">
-            <el-select v-model="infoForm.region" placeholder="请选择商品">
+          <el-form-item label="所属分类">
+             <el-select v-model="infoForm.category_name" placeholder="请选择">
+              <el-option
+                v-for="item in infoForm.allCategory"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
+              </el-option>
+            </el-select>
+            <!-- <el-select v-model="infoForm.region" placeholder="请选择分类">
               <el-option label="长城" value="shanghai"></el-option>
               <el-option label="宝马" value="beijing"></el-option>
-            </el-select>
-          </el-form-item> -->
+            </el-select> -->
+          </el-form-item>
           <el-form-item label="商品图片" prop="list_pic_url">
             <el-upload class="image-uploader-diy" name="brand_pic"
                        action="http://127.0.0.1:8360/admin/upload/brandPic" :show-file-list="true"
@@ -37,7 +45,7 @@
               <img v-if="infoForm.list_pic_url" :src="infoForm.list_pic_url" class="image-show">
               <i v-else class="el-icon-plus image-uploader-icon"></i>
             </el-upload>
-            <div class="form-tip">图片尺寸：750*420</div>
+            <div class="form-tip">图片尺寸：800*800</div>
           </el-form-item>
           <el-form-item label="商品简介" prop="goods_brief">
             <el-input type="textarea" v-model="infoForm.goods_brief" :rows="3"></el-input>
@@ -49,12 +57,19 @@
             <div class="form-tip"></div>
           </el-form-item> -->
 
-        <!-- 图片上传组件辅助-->
-        <el-upload class="avatar-uploader" name="goods_detail_pic"
-                action="http://127.0.0.1:8360/admin/upload/goodsDetailPic" :show-file-list="false"
-                :on-success="handleUploadImageSuccess" :headers="uploaderHeader" 
-                :before-upload="beforeUpload" :on-error="uploadError">
-        </el-upload>
+          <!-- 图片上传组件辅助-->
+          <el-upload class="avatar-uploader" name="goods_detail_pic"
+                  action="http://127.0.0.1:8360/admin/upload/goodsDetailPic" :show-file-list="false"
+                  :on-success="handleUploadImageSuccess" :headers="uploaderHeader" 
+                  :before-upload="beforeUpload" :on-error="uploadError">
+          </el-upload>
+          <!-- 引用网络图片辅助-->
+          <el-form-item label="应用网络图片" class="item-url-image-fuzhu">
+            <el-input class='url-image-fuzhu'></el-input>
+            <el-button type="primary" @click="onLinkImageUrl">引用</el-button>
+            <div class="form-tip">引用网络图片辅助工具，先确定将图片插入商品详情的位置，让其获得焦点，然后复制网络图片地址到当前输入框，之后点击确定</div>
+          </el-form-item>
+          
           <el-form-item label="商品详情" prop="goods_desc">
             <div class="edit_container">
               <quill-editor v-model="infoForm.goods_desc"
@@ -71,10 +86,10 @@
           </el-form-item> -->
           <el-form-item label="推荐类型">
             <el-checkbox-group v-model="infoForm.is_new">
-              <el-checkbox label="新品" name="type" ></el-checkbox>
+              <el-checkbox label="新品" name="is_new" ></el-checkbox>
             </el-checkbox-group>
             <el-checkbox-group v-model="infoForm.is_hot">
-              <el-checkbox label="人气" name="type"></el-checkbox>
+              <el-checkbox label="人气" name="is_hot"></el-checkbox>
             </el-checkbox-group>
           </el-form-item>
           <el-form-item label="上架">
@@ -152,6 +167,7 @@
           floor_price: 0,
           app_list_pic_url: '',
           is_new: false,
+          is_hot: false,
           new_pic_url: "",
           new_sort_order: 10
         },
@@ -190,6 +206,14 @@
       goBackPage() {
         this.$router.go(-1);
       },
+      //富文本插入网络图片
+      onLinkImageUrl(){
+        var imageurl =  document.querySelector('.url-image-fuzhu input').value
+        let quill = this.$refs.myTextEditor.quill
+        let length = quill.getSelection().index;
+        quill.insertEmbed(length, 'image', imageurl)
+        quill.setSelection(length + 1)
+      },
       onSubmitInfo() {
         this.$refs['infoForm'].validate((valid) => {
           if (valid) {
@@ -225,20 +249,20 @@
               // this.$set('infoForm.new_pic_url', res.data.fileUrl);
               break;
             case 'goods_detail_pic':
-               // res为图片服务器返回的数据
-                // 获取富文本组件实例
-                let quill = this.$refs.myTextEditor.quill
-                // 如果上传成功
-                // 获取光标所在位置
-                let length = quill.getSelection().index;
-                // 插入图片  res.info为服务器返回的图片地址
-                quill.insertEmbed(length, 'image', res.data.fileUrl)
-                // 调整光标到最后
-                quill.setSelection(length + 1)
-                
-                // this.$message.error('图片插入失败')
-                // loading动画消失
-                this.quillUpdateImg = false
+              // res为图片服务器返回的数据
+              // 获取富文本组件实例
+              let quill = this.$refs.myTextEditor.quill
+              // 如果上传成功
+              // 获取光标所在位置
+              let length = quill.getSelection().index;
+              // 插入图片  res.info为服务器返回的图片地址
+              quill.insertEmbed(length, 'image', res.data.fileUrl)
+              // 调整光标到最后
+              quill.setSelection(length + 1)
+              
+              // this.$message.error('图片插入失败')
+              // loading动画消失
+              this.quillUpdateImg = false
               break;
           }
         }
@@ -259,6 +283,7 @@
           resInfo.is_new = resInfo.is_new ? true : false;
           resInfo.is_show = resInfo.is_show ? true : false;
           resInfo.is_delete = resInfo.is_delete ? "1" : "0";
+          resInfo.is_hot = resInfo.is_hot ? true : false;
           that.infoForm = resInfo;
 
           // 初始化 summernote
@@ -379,5 +404,8 @@
     width: 165px;
     height: 105px;
     display: block;
+  }
+  .item-url-image-fuzhu .el-input{
+    width: 260px;
   }
 </style>

@@ -156,6 +156,16 @@ export default new Router({
                     name: 'channel_add',
                     component: require('@/components/Channel/ChannelAddPage')
                 },
+                {
+                    path: 'goodsgallery',
+                    name: 'goodsgallery',
+                    component: require('@/components/GoodsGallery/GoodsGalleryPage')
+                },
+                {
+                    path: 'goodsgallery/add',
+                    name: 'goodsgallery_add',
+                    component: require('@/components/GoodsGallery/GoodsGalleryAddPage')
+                },
             ]
         },
         {

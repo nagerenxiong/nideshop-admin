@@ -29,6 +29,8 @@
                     </el-table-column>
                     <el-table-column prop="name" label="商品名称">
                     </el-table-column>
+                    <el-table-column prop="category_name" label="所属分类">
+                    </el-table-column>
                     <el-table-column prop="retail_price" label="售价" width="120">
                     </el-table-column>
                     <el-table-column prop="goods_number" label="库存" width="120">

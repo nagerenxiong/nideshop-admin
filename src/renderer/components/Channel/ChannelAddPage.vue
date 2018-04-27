@@ -30,8 +30,13 @@
             </el-upload>
             <div class="form-tip">图片尺寸：1440*800</div>
           </el-form-item>
-
-           <el-form-item label="排序" prop="sort_order">
+          <!-- 引用网络图片辅助-->
+          <el-form-item label="Icon图片清除辅助" class="item-icon-image-fuzhu">
+            <el-input class='icon-image-fuzhu' v-model="infoForm.icon_url" ></el-input>
+            <el-button type="primary" @click="onClearIconUrl">清除</el-button>
+            <div class="form-tip">清除Icon图片辅助工具，Icon图片不填则不显示图片</div>
+          </el-form-item>
+          <el-form-item label="排序" prop="sort_order">
             <el-input-number v-model="infoForm.sort_order" :min="1" :max="1000"></el-input-number>
           </el-form-item>
           <el-form-item>
@@ -66,13 +71,15 @@
           url: [
             { required: true, message: '请输入图片url', trigger: 'blur' },
           ],
-          icon_url: [
-            { required: true, message: '请输入icon url', trigger: 'blur' },
-          ],
         },
       }
     },
     methods: {
+      // 清除Icon图标
+      onClearIconUrl(){
+        document.querySelector('.icon-image-fuzhu input').value = ""
+        this.infoForm.icon_url = "";
+      },
       goBackPage() {
         this.$router.go(-1);
       },
@@ -142,3 +149,9 @@
   }
 
 </script>
+
+<style>
+  .item-icon-image-fuzhu .el-input{
+    width: 260px;
+  }
+</style>

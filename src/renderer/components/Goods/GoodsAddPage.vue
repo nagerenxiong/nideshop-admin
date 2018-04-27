@@ -13,7 +13,14 @@
     <div class="content-main">
       <div class="form-table-box">
         <el-form ref="infoForm" :rules="infoRules" :model="infoForm" label-width="120px">
-          
+          <!-- <el-form-item label="商品ID" prop="id">
+            <el-input v-model="infoForm.id"></el-input>
+            <div class="form-tip">商品ID,如:1234567; 添加商品的时候手动填写，值同商品sn一致，<font color="red">修改商品信息时，请勿修改</font></div>
+          </el-form-item> -->
+          <el-form-item label="商品sn" prop="goods_sn">
+            <el-input v-model="infoForm.goods_sn"></el-input>
+            <div class="form-tip">商品sn,如:1234567; 添加商品的时候手动填写，值同商品ID一致，<font color="red">修改商品信息时，请勿修改</font></div>
+          </el-form-item>
           <el-form-item label="商品名称" prop="name">
             <el-input v-model="infoForm.name"></el-input>
           </el-form-item>
@@ -24,8 +31,8 @@
             <el-cascader :options="options" placeholder="请选择分类" v-model="selectedOptions" @change="handleChange">
             </el-cascader>
           </el-form-item> -->
-          <el-form-item label="所属分类">
-             <el-select v-model="infoForm.category_name" placeholder="请选择">
+          <el-form-item label="所属分类" prop="category_id">
+             <el-select v-model="infoForm.category_name" value-key="id" filterable placeholder="请选择" @change="handleSelectChage">
               <el-option
                 v-for="item in infoForm.allCategory"
                 :key="item.id"
@@ -82,8 +89,9 @@
               </quill-editor>
             </div>
           </el-form-item>
-          <!-- <el-form-item label="规格/库存" prop="simple_desc">
-          </el-form-item> -->
+          <el-form-item label="规格/库存" prop="goods_number">
+            <el-input v-model="infoForm.goods_number"></el-input>
+          </el-form-item>
           <el-form-item label="推荐类型">
             <el-checkbox-group v-model="infoForm.is_new">
               <el-checkbox label="新品" name="is_new" ></el-checkbox>
@@ -93,7 +101,7 @@
             </el-checkbox-group>
           </el-form-item>
           <el-form-item label="上架">
-            <el-switch on-text="上架" off-text="下架" on-value="0" off-value="1" v-model="infoForm.is_delete"></el-switch>
+            <el-switch on-text="上架" off-text="下架" on-value="1" off-value="0" v-model="infoForm.is_on_sale"></el-switch>
           </el-form-item>
           <el-form-item label="排序" prop="sort_order">
             <el-input-number v-model="infoForm.sort_order" :min="1" :max="1000"></el-input-number>
@@ -160,7 +168,7 @@
           list_pic_url: '',
           goods_brief: '',
           goods_desc: '',
-          is_delete: 0,
+          is_on_sale: 0,
           pic_url: '',
           sort_order: 100,
           is_show: true,
@@ -193,6 +201,10 @@
       },
       onEditorBlur(editor) {
         console.log('editor blur!', editor)
+      },
+      handleSelectChage(val){
+        //下拉框选择内容改变后
+        this.infoForm.category_id = val
       },
       beforeUpload() {
         // 显示loading动画
@@ -282,15 +294,23 @@
           let resInfo = response.data.data;
           resInfo.is_new = resInfo.is_new ? true : false;
           resInfo.is_show = resInfo.is_show ? true : false;
-          resInfo.is_delete = resInfo.is_delete ? "1" : "0";
           resInfo.is_hot = resInfo.is_hot ? true : false;
+          resInfo.is_on_sale = resInfo.is_on_sale ? "1" : "0";
           that.infoForm = resInfo;
 
           // 初始化 summernote
           // that.initSummerNote();
         })
       },
-
+      // 获取所有分类
+      getAllCategory(){
+        let that = this
+        this.axios.get('goods/getAllCategory', {
+          params: {}
+        }).then((response) => {
+          that.infoForm.allCategory = response.data.data;
+        })
+      },
       // summernote 上传图片，返回链接
       sendFile(file){
 
@@ -341,6 +361,9 @@
       this.infoForm.id = this.$route.query.id || 0;
       this.getInfo();
       console.log(api);
+      if(this.infoForm.id == 0){
+        this.getAllCategory();
+      }
     },
   }
 

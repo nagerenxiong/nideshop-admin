@@ -13,7 +13,7 @@ Node.js开源商城NideShop管理后台（基于Node.js、Vue.js、Element UI、
 ### Build Setup
 
 + 安装nideshop
-[GitHub](https://github.com/tumobi/nideshop)
+[GitHub](https://github.com/Mrjingfu/nideshop)
 
 + 修改api地址
 src/renderer/main.js
@@ -34,7 +34,8 @@ npm run build:web
 admin
 admin888
 
-喜欢别忘了Star 本项目长期更新完善，欢迎Watch
+### 最后,本程序在nideshop基础上完善的,原作者tumobi
+喜欢别忘了Star 本项目长期更新完善，欢迎Watch, QQ群：418177552
 
 
 ---
